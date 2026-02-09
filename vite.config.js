@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/", // ← Змінив тут
+  base: "/web-clothe-shop/",
   resolve: {
     dedupe: ["react", "react-dom"],
   },
