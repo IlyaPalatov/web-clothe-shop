@@ -148,8 +148,7 @@
   color: white;
 }
 
-/* Show burger menu on tablets and mobile */
-@media (max-width: 768px) {
+@media (max-width: 930px) {
   .burger-menu {
     display: flex;
   }
