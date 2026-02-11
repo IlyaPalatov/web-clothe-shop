@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./styles/WelcomePage.css";
 import Menu from "../menu/Menu";
@@ -12,6 +12,7 @@ const PalatovLogo = ({ className = "" }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    aria-label="Palatov Logo"
   >
     <path
       d="M8 32V8H18C21.866 8 25 11.134 25 15C25 18.866 21.866 22 18 22H12V32H8Z"
@@ -29,6 +30,7 @@ const PalatovLogo = ({ className = "" }) => (
 
 const WelcomePage = () => {
   const { t, i18n } = useTranslation();
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -36,48 +38,82 @@ const WelcomePage = () => {
 
   const currentYear = new Date().getFullYear();
 
+  // Lazy load video after page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVideoLoaded(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="welcome-page">
+      {/* Preconnect to external domains */}
+      <link rel="preconnect" href="https://www.youtube.com" />
+      <link rel="preconnect" href="https://images.unsplash.com" />
+      <link rel="dns-prefetch" href="https://www.youtube.com" />
+      <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
       <header className="header">
         <div className="container">
-          <nav className="nav">
+          <nav className="nav" role="navigation" aria-label="Main navigation">
             <div className="logo">
               <PalatovLogo className="logo-icon" />
               <span className="logo-text">{t("logo")}</span>
             </div>
-            <ul className="nav-links">
-              <li>
-                <a href="#home">{t("nav.home")}</a>
+            <ul className="nav-links" role="menubar">
+              <li role="none">
+                <a href="#home" role="menuitem">
+                  {t("nav.home")}
+                </a>
               </li>
-              <li>
-                <a href="#about">{t("nav.about")}</a>
+              <li role="none">
+                <a href="#about" role="menuitem">
+                  {t("nav.about")}
+                </a>
               </li>
-              <li>
-                <a href="#collections">{t("nav.collections")}</a>
+              <li role="none">
+                <a href="#collections" role="menuitem">
+                  {t("nav.collections")}
+                </a>
               </li>
-              <li>
-                <a href="#services">{t("nav.services")}</a>
+              <li role="none">
+                <a href="#services" role="menuitem">
+                  {t("nav.services")}
+                </a>
               </li>
-              <li>
-                <a href="#contact">{t("nav.contact")}</a>
+              <li role="none">
+                <a href="#contact" role="menuitem">
+                  {t("nav.contact")}
+                </a>
               </li>
             </ul>
-            <div className="language-switcher">
+            <div
+              className="language-switcher"
+              role="group"
+              aria-label="Language selection"
+            >
               <button
                 onClick={() => changeLanguage("uk")}
                 className={i18n.language === "uk" ? "active" : ""}
+                aria-label="Switch to Ukrainian"
+                aria-pressed={i18n.language === "uk"}
               >
                 УКР
               </button>
               <button
                 onClick={() => changeLanguage("en")}
                 className={i18n.language === "en" ? "active" : ""}
+                aria-label="Switch to English"
+                aria-pressed={i18n.language === "en"}
               >
                 ENG
               </button>
               <button
                 onClick={() => changeLanguage("es")}
                 className={i18n.language === "es" ? "active" : ""}
+                aria-label="Switch to Spanish"
+                aria-pressed={i18n.language === "es"}
               >
                 ESP
               </button>
@@ -98,12 +134,15 @@ const WelcomePage = () => {
 
       <section className="hero" id="home">
         <div className="video-background">
-          <iframe
-            src="https://www.youtube.com/embed/E_CqDUcOpjQ?autoplay=1&mute=1&loop=1&playlist=E_CqDUcOpjQ&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1"
-            title="Fashion Background Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          {videoLoaded && (
+            <iframe
+              src="https://www.youtube.com/embed/E_CqDUcOpjQ?autoplay=1&mute=1&loop=1&playlist=E_CqDUcOpjQ&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1&playsinline=1"
+              title="PALATOV Fashion Brand Background Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+            ></iframe>
+          )}
         </div>
 
         <div className="hero-overlay"></div>
@@ -112,7 +151,12 @@ const WelcomePage = () => {
           <div className="hero-content">
             <h1 className="hero-title">{t("hero.title")}</h1>
             <p className="hero-subtitle">{t("hero.subtitle")}</p>
-            <button className="cta-button">{t("hero.cta")}</button>
+            <button
+              className="cta-button"
+              aria-label="Learn more about PALATOV"
+            >
+              {t("hero.cta")}
+            </button>
           </div>
         </div>
       </section>
@@ -128,15 +172,24 @@ const WelcomePage = () => {
             </div>
             <div className="about-stats">
               <div className="stat-item">
-                <div className="stat-number">2026</div>
+                <div className="stat-number" aria-label="Founded in 2026">
+                  2026
+                </div>
                 <div className="stat-label">{t("about.stats.founded")}</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">100%</div>
+                <div
+                  className="stat-number"
+                  aria-label="100% quality guaranteed"
+                >
+                  100%
+                </div>
                 <div className="stat-label">{t("about.stats.quality")}</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">UA</div>
+                <div className="stat-number" aria-label="Made in Ukraine">
+                  UA
+                </div>
                 <div className="stat-label">{t("about.stats.made")}</div>
               </div>
             </div>
@@ -148,7 +201,11 @@ const WelcomePage = () => {
       <section className="collections" id="collections">
         <div className="collection-split">
           {/* For Her */}
-          <div className="collection-side for-her">
+          <div
+            className="collection-side for-her"
+            role="region"
+            aria-label="Women's collection"
+          >
             <div className="collection-overlay"></div>
             <div className="collection-content">
               <h2 className="collection-title">
@@ -157,14 +214,21 @@ const WelcomePage = () => {
               <p className="collection-subtitle">
                 {t("collections.forHer.subtitle")}
               </p>
-              <button className="collection-button">
+              <button
+                className="collection-button"
+                aria-label="View women's collection"
+              >
                 {t("collections.forHer.cta")}
               </button>
             </div>
           </div>
 
           {/* For Him */}
-          <div className="collection-side for-him">
+          <div
+            className="collection-side for-him"
+            role="region"
+            aria-label="Men's collection"
+          >
             <div className="collection-overlay"></div>
             <div className="collection-content">
               <h2 className="collection-title">
@@ -173,7 +237,10 @@ const WelcomePage = () => {
               <p className="collection-subtitle">
                 {t("collections.forHim.subtitle")}
               </p>
-              <button className="collection-button">
+              <button
+                className="collection-button"
+                aria-label="View men's collection"
+              >
                 {t("collections.forHim.cta")}
               </button>
             </div>
@@ -185,26 +252,40 @@ const WelcomePage = () => {
         <div className="container">
           <h2 className="section-title">{t("features.title")}</h2>
           <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🚀</div>
+            <article className="feature-card">
+              <div className="feature-icon" role="img" aria-label="Speed icon">
+                🚀
+              </div>
               <h3>{t("features.speed.title")}</h3>
               <p>{t("features.speed.description")}</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">💎</div>
+            </article>
+            <article className="feature-card">
+              <div
+                className="feature-icon"
+                role="img"
+                aria-label="Quality icon"
+              >
+                💎
+              </div>
               <h3>{t("features.quality.title")}</h3>
               <p>{t("features.quality.description")}</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">🎯</div>
+            </article>
+            <article className="feature-card">
+              <div
+                className="feature-icon"
+                role="img"
+                aria-label="Reliability icon"
+              >
+                🎯
+              </div>
               <h3>{t("features.reliability.title")}</h3>
               <p>{t("features.reliability.description")}</p>
-            </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <footer className="footer">
+      <footer className="footer" role="contentinfo">
         <div className="container">
           <p>
             &copy; {currentYear} {t("logo")}. {t("footer.copyright")}
