@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import "./styles/Menu.css";
+import "./styles/MenuDark.css";
 
-const Menu = ({ logo }) => {
+const Menu = ({ logo, darkMode, toggleDarkMode }) => {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +19,6 @@ const Menu = ({ logo }) => {
     setIsOpen(false);
   };
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -31,7 +31,6 @@ const Menu = ({ logo }) => {
     };
   }, [isOpen]);
 
-  // Close menu on Escape key
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape" && isOpen) {
@@ -45,7 +44,6 @@ const Menu = ({ logo }) => {
 
   return (
     <>
-      {/* Burger Button */}
       <button
         className={`burger-menu ${isOpen ? "open" : ""}`}
         onClick={toggleMenu}
@@ -59,7 +57,6 @@ const Menu = ({ logo }) => {
         <span></span>
       </button>
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`menu-overlay ${isOpen ? "active" : ""}`}
         id="mobile-menu"
@@ -68,10 +65,8 @@ const Menu = ({ logo }) => {
         aria-label="Mobile navigation menu"
       >
         <div className="menu-content">
-          {/* Logo in Menu */}
           <div className="menu-logo">{logo}</div>
 
-          {/* Navigation Links */}
           <nav
             className="menu-nav"
             role="navigation"
@@ -131,7 +126,18 @@ const Menu = ({ logo }) => {
             </ul>
           </nav>
 
-          {/* Language Switcher */}
+          <button
+            className="menu-theme-toggle"
+            onClick={toggleDarkMode}
+            aria-label={
+              darkMode ? "Switch to light mode" : "Switch to dark mode"
+            }
+            tabIndex={isOpen ? 0 : -1}
+            type="button"
+          >
+            {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+          </button>
+
           <div
             className="menu-language-switcher"
             role="group"

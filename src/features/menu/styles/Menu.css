@@ -190,3 +190,34 @@
     font-size: 1.3rem;
   }
 }
+/* Theme Toggle in Menu */
+.menu-theme-toggle {
+  background: transparent;
+  border: 2px solid #1a1a1a;
+  color: #1a1a1a;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menu-theme-toggle:hover {
+  background: #f5f5f5;
+}
+
+.dark-theme .menu-theme-toggle {
+  border-color: #d4c5b9;
+  color: #d4c5b9;
+}
+
+.dark-theme .menu-theme-toggle:hover {
+  background: #2a2a2a;
+  color: #e8d5c4;
+}

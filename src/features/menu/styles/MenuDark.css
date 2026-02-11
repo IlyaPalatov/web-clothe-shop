@@ -1,0 +1,39 @@
+/* Dark Theme for Menu */
+.dark-theme .burger-menu span {
+  background: #e0e0e0;
+}
+
+.dark-theme .menu-overlay {
+  background: #1a1a1a;
+}
+
+.dark-theme .menu-logo {
+  color: #e0e0e0;
+}
+
+.dark-theme .menu-nav ul li a {
+  color: #d4c5b9;
+}
+
+.dark-theme .menu-nav ul li a::after {
+  background: #d4c5b9;
+}
+
+.dark-theme .menu-nav ul li a:hover {
+  color: #e8d5c4;
+}
+
+.dark-theme .menu-language-switcher button {
+  border-color: #d4c5b9;
+  color: #d4c5b9;
+}
+
+.dark-theme .menu-language-switcher button:hover {
+  background: #2a2a2a;
+  color: #e8d5c4;
+}
+
+.dark-theme .menu-language-switcher button.active {
+  background: #d4c5b9;
+  color: #1a1a1a;
+}

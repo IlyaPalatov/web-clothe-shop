@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./styles/WelcomePage.css";
+import "./styles/WelcomePageDark.css";
 import Menu from "../menu/Menu";
 
 // SVG Logo Component
@@ -31,12 +32,35 @@ const PalatovLogo = ({ className = "" }) => (
 const WelcomePage = () => {
   const { t, i18n } = useTranslation();
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    localStorage.setItem("darkMode", !darkMode);
+  };
+
   const currentYear = new Date().getFullYear();
+
+  // Load dark mode preference
+  useEffect(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    if (savedMode === "true") {
+      setDarkMode(true);
+    }
+  }, []);
+
+  // Apply dark theme class
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-theme");
+    } else {
+      document.body.classList.remove("dark-theme");
+    }
+  }, [darkMode]);
 
   // Lazy load video after page load
   useEffect(() => {
@@ -48,7 +72,6 @@ const WelcomePage = () => {
 
   return (
     <div className="welcome-page">
-      {/* Preconnect to external domains */}
       <link rel="preconnect" href="https://www.youtube.com" />
       <link rel="preconnect" href="https://images.unsplash.com" />
       <link rel="dns-prefetch" href="https://www.youtube.com" />
@@ -88,6 +111,19 @@ const WelcomePage = () => {
                 </a>
               </li>
             </ul>
+
+            {/* Theme Toggle Button */}
+            <button
+              className="theme-toggle"
+              onClick={toggleDarkMode}
+              aria-label={
+                darkMode ? "Switch to light mode" : "Switch to dark mode"
+              }
+              title={darkMode ? "Light Mode" : "Dark Mode"}
+            >
+              {darkMode ? "☀️" : "🌙"}
+            </button>
+
             <div
               className="language-switcher"
               role="group"
@@ -119,7 +155,6 @@ const WelcomePage = () => {
               </button>
             </div>
 
-            {/* Burger Menu Component */}
             <Menu
               logo={
                 <div className="logo">
@@ -127,6 +162,8 @@ const WelcomePage = () => {
                   <span className="logo-text">{t("logo")}</span>
                 </div>
               }
+              darkMode={darkMode}
+              toggleDarkMode={toggleDarkMode}
             />
           </nav>
         </div>
@@ -161,7 +198,6 @@ const WelcomePage = () => {
         </div>
       </section>
 
-      {/* About Section */}
       <section className="about" id="about">
         <div className="container">
           <div className="about-content">
@@ -197,10 +233,8 @@ const WelcomePage = () => {
         </div>
       </section>
 
-      {/* Collections Section */}
       <section className="collections" id="collections">
         <div className="collection-split">
-          {/* For Her */}
           <div
             className="collection-side for-her"
             role="region"
@@ -223,7 +257,6 @@ const WelcomePage = () => {
             </div>
           </div>
 
-          {/* For Him */}
           <div
             className="collection-side for-him"
             role="region"
